@@ -33,6 +33,9 @@ INSERT INTO subclasificaciones (nombre, descripcion, id_clasificacion) VALUES
 ('Teléfonos', 'Subcategoría de teléfonos', 1),
 ('Sofás', 'Subcategoría de sofás', 2);
 
+INSERT INTO subclasificaciones (nombre, descripcion, id_clasificacion) VALUES 
+('Impresion de vinil', 'Subcategoría de teléfonos', 2);
+
 -- Inserciones en la tabla productos
 INSERT INTO productos (aplicar_instalacion, precio_con_instalacion, precio_sin_instalacion, observaciones, id_subclasificacion) VALUES 
 ('S', 1200, 1000, 'Producto con instalación', 1),
@@ -42,3 +45,4 @@ INSERT INTO productos (aplicar_instalacion, precio_con_instalacion, precio_sin_i
 INSERT INTO productos_cotizaciones (id_cotizacion, id_producto, cantidad, base, altura, precio_unitario, importe) VALUES 
 (1, 1, 2, 10.5, 5.5, 1000, 2000),
 (2, 2, 1, 12.0, 6.0, 800, 800);
+

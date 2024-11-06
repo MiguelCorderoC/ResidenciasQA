@@ -1,4 +1,4 @@
-CREATE VIEW vista_clientes_cotizaciones AS
+CREATE OR REPLACE VIEW vista_clientes_cotizaciones AS
 SELECT
     cli.id AS cliente_id,
     cli.nombre AS cliente_nombre,
@@ -16,7 +16,9 @@ SELECT
 FROM 
     clientes AS cli
 JOIN 
-    cotizaciones AS cot ON cli.id = cot.id_clientes;
+    cotizaciones AS cot ON cli.id = cot.id_clientes
+ORDER BY 
+    cot.id DESC;
     
     SELECT * FROM cotizaciones;
     SELECT * FROM vista_clientes_cotizaciones;
@@ -36,7 +38,7 @@ JOIN
     
     /*-----------------------------------------------------------------------------*/
     
-CREATE VIEW vista_productos_subclasificaciones AS
+CREATE OR REPLACE VIEW vista_productos_subclasificaciones AS
 SELECT 
     p.id AS producto_id,
     p.aplicar_instalacion,
@@ -49,4 +51,9 @@ SELECT
 FROM 
     productos p
 JOIN 
-    subclasificaciones s ON p.id_subclasificacion = s.id;
+    subclasificaciones s ON p.id_subclasificacion = s.id
+ORDER BY 
+    p.id DESC;  -- Ordena por el ID del producto de mayor a menor
+   
+SELECT * FROM subclasificaciones;
+SELECT * FROM productos;   

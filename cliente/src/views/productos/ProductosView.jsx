@@ -40,10 +40,10 @@ function ProductosView() {
             <th className="px-6 py-3 text-left font-semibold">Nombre</th>
             <th className="px-6 py-3 text-left font-semibold">Instalación</th>
             <th className="px-6 py-3 text-left font-semibold">
-              Precio con instalación
+              Precio sin instalación
             </th>
             <th className="px-6 py-3 text-left font-semibold">
-              Precio sin instalación
+              Precio con instalación
             </th>
             <th className="px-6 py-3 text-left font-semibold">Observaciones</th>
           </tr>
@@ -57,8 +57,8 @@ function ProductosView() {
               <td className="px-6 py-3">{item.producto_id}</td>
               <td className="px-6 py-3">{item.subclasificacion_nombre}</td>
               <td className="px-6 py-3">{item.aplicar_instalacion}</td>
-              <td className="px-6 py-3">{item.precio_con_instalacion}</td>
               <td className="px-6 py-3">{item.precio_sin_instalacion}</td>
+              <td className="px-6 py-3">{item.precio_con_instalacion}</td>
               <td className="px-6 py-3">{item.observaciones}</td>
             </tr>
           ))}

@@ -83,6 +83,7 @@ CREATE TABLE productos_cotizaciones (
 	id_cotizacion INT,
     id_producto INT,
     cantidad INT,
+    instalacion CHAR,
     base FLOAT,
     altura FLOAT,
     precio_unitario FLOAT,
