@@ -13,9 +13,14 @@ function DropDownMenu() {
         onClick={() => setDropDown((prev) => !prev)}
         className="w-full flex items-center gap-2 pl-1 py-1"
       >
-        <MdChevronRight /> Catalogos
+        <MdChevronRight
+          className={`text-2xl font-bold transition-all duration-300 ${
+            dropDown && "rotate-90"
+          }`}
+        />
+        Catalogos
       </button>
-      <ul className="text-base">
+      <ul className={`text-base ${dropDown ? "block" : "hidden"}`}>
         <li>
           <Link
             to={"/clasificaciones"}
@@ -33,12 +38,18 @@ function DropDownMenu() {
           </Link>
         </li>
         <li>
-          <Link className="w-full flex items-center gap-2 pl-2 py-1">
+          <Link
+            to={"/estados-clientes"}
+            className="w-full flex items-center gap-2 pl-2 py-1"
+          >
             <MdRealEstateAgent /> Estado de cliente
           </Link>
         </li>
         <li>
-          <Link className="w-full flex items-center gap-2 pl-2 py-1">
+          <Link
+            to={"/tipos-clientes"}
+            className="w-full flex items-center gap-2 pl-2 py-1"
+          >
             <FaUser /> Tipo de cliente
           </Link>
         </li>

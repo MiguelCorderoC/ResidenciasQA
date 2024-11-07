@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { IoMdSettings } from "react-icons/io";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 
 function UserSettings() {
   const auth = useAuth();
@@ -22,29 +23,20 @@ function UserSettings() {
 
   return (
     <>
-      <article>
-        <article
-          className={`transition-all duration-300 ${
-            dropDown ? "block" : "hidden"
-          }`}
+      <article className="text-gray-800 text-lg font-semibold">
+        <Link
+          to={"/signin"}
+          className="w-full flex items-center gap-1 pl-1 py-1"
         >
-          <ul>
-            <li></li>
-            <li>
-              <Link>Crear nuevo usuario</Link>
-            </li>
-            <li>
-              <Link>Editar informacion</Link>
-            </li>
-          </ul>
-        </article>
-        <button
-          onClick={() => setDropDown((prev) => !prev)}
+          <FaUserCircle /> Crear usuario
+        </Link>
+        <Link
+          to={"/update-profile"}
           className="w-full flex items-center gap-1 pl-1 py-1"
         >
           <IoMdSettings /> Configuracion
-        </button>
-        <article className="flex items-center gap-2 p-1">
+        </Link>
+        <article className="flex items-center border-t-2 border-gray-300 gap-2 p-1">
           <img
             src={photoURL}
             alt="Foto usuario"

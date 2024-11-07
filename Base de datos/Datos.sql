@@ -46,3 +46,8 @@ INSERT INTO productos_cotizaciones (id_cotizacion, id_producto, cantidad, base, 
 (1, 1, 2, 10.5, 5.5, 1000, 2000),
 (2, 2, 1, 12.0, 6.0, 800, 800);
 
+INSERT INTO productos_cotizaciones (id_cotizacion, id_producto, cantidad, base, altura, precio_unitario, importe) VALUES 
+(1, 1, 2, 10.5, 5.5, 1000, 2000),
+(2, 2, 1, 12.0, 6.0, 800, 800);
+
+SELECT * FROM productos_cotizaciones;

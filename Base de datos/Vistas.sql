@@ -55,5 +55,19 @@ JOIN
 ORDER BY 
     p.id DESC;  -- Ordena por el ID del producto de mayor a menor
    
-SELECT * FROM subclasificaciones;
-SELECT * FROM productos;   
+CREATE OR REPLACE VIEW view_precios_productos AS
+SELECT p.id AS producto_id, s.nombre AS subclasificacion_nombre
+FROM 
+	productos p
+JOIN
+	subclasificaciones s ON p.id_subclasificacion = s.id;
+    
+CREATE OR REPLACE VIEW view_clientes AS
+	SELECT c.id, c.nombre, c.apellido_paterno, c.apellido_materno, c.constancia_fiscal, c.rfc,
+    c.negocio, c.domicilio, c.telefono_wp, c.telefono_fijo, c.correo, c.id_estados_clientes,
+    c.id_tipos_clientes, e.nombre AS estado_cliente, t.nombre AS tipo_cliente
+    FROM clientes c
+    JOIN tipos_clientes t ON c.id_tipos_clientes = t.id
+    JOIN estados_clientes e ON c.id_estados_clientes = e.id;
+
+SELECT * FROM view_clientes

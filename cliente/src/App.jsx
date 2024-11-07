@@ -11,10 +11,19 @@ import CotizacionesView from "./views/cotizaciones/CotizacionesView";
 import CotizacionesCreateView from "./views/cotizaciones/CotizacionesCreateView";
 import ClasificacionesView from "./views/catalogos/clasificaciones/ClasificacionesView";
 import SubClasificacionesView from "./views/catalogos/subclasificaciones/SubClasificacionesView";
+import RecoveryPasswordView from "./views/auth/RecoveryPasswordView";
+import SignInView from "./views/auth/SignInView";
+import UpdateProfileView from "./views/auth/UpdateProfileView";
+import TiposClientesView from "./views/catalogos/tiposclientes/TiposClientesView";
+import TiposClientesCreateView from "./views/catalogos/tiposclientes/TiposClientesCreateView";
+import EstadosClientesView from "./views/catalogos/estadosclientes/EstadosClientesView";
+import EstadosClientesCreateView from "./views/catalogos/estadosclientes/EstadosClientesCreateView";
+import ClientesView from "./views/clientes/ClientesView";
+import ClientesCreateView from "./views/clientes/ClientesCreateView";
 
 function App() {
   const location = useLocation();
-  const noSidebarRoutes = ["/login", "/another-route"];
+  const noSidebarRoutes = ["/login", "/recovery-password"];
 
   const mainClassName = noSidebarRoutes.includes(location.pathname)
     ? ""
@@ -81,6 +90,74 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SubClasificacionesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recovery-password"
+              element={<RecoveryPasswordView />}
+            />
+            <Route
+              path="/signin"
+              element={
+                <ProtectedRoute>
+                  <SignInView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/update-profile"
+              element={
+                <ProtectedRoute>
+                  <UpdateProfileView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tipos-clientes"
+              element={
+                <ProtectedRoute>
+                  <TiposClientesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tipos-clientes/create"
+              element={
+                <ProtectedRoute>
+                  <TiposClientesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/estados-clientes"
+              element={
+                <ProtectedRoute>
+                  <EstadosClientesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/estados-clientes/create"
+              element={
+                <ProtectedRoute>
+                  <EstadosClientesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clientes"
+              element={
+                <ProtectedRoute>
+                  <ClientesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clientes/create"
+              element={
+                <ProtectedRoute>
+                  <ClientesCreateView />
                 </ProtectedRoute>
               }
             />
