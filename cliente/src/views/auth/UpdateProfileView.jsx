@@ -1,12 +1,34 @@
+import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
+import { useForm } from "react-hook-form";
 
 function UpdateProfileView() {
   const auth = useAuth();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
   const { email, displayName, photoURL } = auth.user || {};
+
+  const onSubmit = async (data) => {
+    const { name, photo } = data;
+    try {
+      await auth.updateUserProfile(name, photo);
+      toast.success("Informacion actualizada");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al actualizar informacion");
+    }
+  };
+
   return (
     <>
       <section className="text-gray-800 bg-gray-50 dark:bg-gray-900 h-screen flex justify-center items-center">
-        <form className="border shadow rounded w-full max-w-2xl flex flex-col gap-3 px-5 py-7">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="border shadow rounded w-full max-w-2xl flex flex-col gap-3 px-5 py-7"
+        >
           <h2 className="text-4xl font-semibold">Configurar perfil</h2>
           <article className="flex items-center gap-2">
             <img
@@ -23,6 +45,7 @@ function UpdateProfileView() {
             <label className="font-semibold text-sm">Nombre de usuario</label>
             <input
               type="text"
+              {...register("name")}
               defaultValue={displayName}
               className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
@@ -31,6 +54,7 @@ function UpdateProfileView() {
             <label className="font-semibold text-sm">Foto de usuario</label>
             <input
               type="text"
+              {...register("photo")}
               defaultValue={photoURL}
               className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             />
