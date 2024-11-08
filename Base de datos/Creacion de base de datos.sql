@@ -34,7 +34,7 @@ CREATE TABLE clientes (
 
 CREATE TABLE tipos_ventas (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR (20),
+    nombre VARCHAR (30),
     descripcion VARCHAR (50)    
 );
 
@@ -57,13 +57,13 @@ CREATE TABLE cotizaciones (
 
 CREATE TABLE clasificaciones (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR (20),
+    nombre VARCHAR (30),
     descripcion VARCHAR (100)
 );
 
 CREATE TABLE subclasificaciones (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR (20),
+    nombre VARCHAR (30),
     descripcion VARCHAR (100),
     id_clasificacion INT,
     CONSTRAINT fk_clasificaciones_subclasificaciones FOREIGN KEY (id_clasificacion) REFERENCES clasificaciones (id)
@@ -91,4 +91,16 @@ CREATE TABLE productos_cotizaciones (
     PRIMARY KEY (id_cotizacion, id_producto),
     CONSTRAINT fk_cotizaciones_productos_cotizaciones FOREIGN KEY (id_cotizacion) REFERENCES cotizaciones (id),
     CONSTRAINT fk_productos_productos_cotizaciones FOREIGN KEY (id_producto) REFERENCES productos (id)
+);
+
+CREATE TABLE unidades (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR (30),
+    descripcion VARCHAR (100)
+);
+
+CREATE TABLE materiales (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR (30),
+    descripcion VARCHAR (100)
 );

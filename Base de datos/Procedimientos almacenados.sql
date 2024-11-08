@@ -148,4 +148,33 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
 
+CREATE PROCEDURE sp_insertar_clasificacion(
+    IN p_nombre VARCHAR(30),
+    IN p_descripcion VARCHAR(100)
+)
+BEGIN
+    INSERT INTO clasificaciones (nombre, descripcion)
+    VALUES (p_nombre, p_descripcion);
+    
+    SELECT * FROM clasificaciones WHERE id = (SELECT MAX(id) FROM clasificaciones);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE sp_insertar_subclasificacion (
+	IN p_nombre VARCHAR (30),
+    IN p_descripcion VARCHAR (100),
+    IN p_id_clasificacion INT )
+    
+    BEGIN 
+		INSERT INTO subclasificaciones (nombre, descripcion, id_clasificacion) 
+        VALUES (p_nombre, p_descripcion, p_id_clasificacion);
+        
+	    SELECT * FROM subclasificaciones WHERE id = (SELECT MAX(id) FROM subclasificaciones);
+END //
+DELIMITER ;

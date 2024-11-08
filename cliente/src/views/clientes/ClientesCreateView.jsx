@@ -131,7 +131,7 @@ function ClientesCreateView() {
             </article>
           </article>
           <article className="flex gap-2">
-            <article className="w-1/4">
+            <article className="flex-grow">
               <label className="font-semibold text-sm">Nombre</label>
               <input
                 type="text"
@@ -173,7 +173,7 @@ function ClientesCreateView() {
                 className="border rounded h-10 w-full bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </article>
-            <article className="w-1/4">
+            <article className="flex-grow">
               <label className="font-semibold text-sm">RFC</label>
               <input
                 type="text"
@@ -199,7 +199,7 @@ function ClientesCreateView() {
                 className="border rounded h-10 w-full bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </article>
-            <article className="w-1/4">
+            <article className="flex-grow">
               <label className="font-semibold text-sm">Correo</label>
               <input
                 type="text"
@@ -207,6 +207,14 @@ function ClientesCreateView() {
                 className="border rounded h-10 w-full bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </article>
+          </article>
+          <article>
+            <label className="font-semibold text-sm">Constancia fiscal</label>
+            <input
+              type="text"
+              {...register("constancia_fiscal")}
+              className="border rounded h-10 w-full bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
           </article>
           <button className="w-full transition duration-300 text-white bg-black font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-800">
             Registrar cliente

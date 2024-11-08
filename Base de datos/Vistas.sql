@@ -70,4 +70,3 @@ CREATE OR REPLACE VIEW view_clientes AS
     JOIN tipos_clientes t ON c.id_tipos_clientes = t.id
     JOIN estados_clientes e ON c.id_estados_clientes = e.id;
 
-SELECT * FROM view_clientes

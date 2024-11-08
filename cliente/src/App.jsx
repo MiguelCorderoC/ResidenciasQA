@@ -20,6 +20,8 @@ import EstadosClientesView from "./views/catalogos/estadosclientes/EstadosClient
 import EstadosClientesCreateView from "./views/catalogos/estadosclientes/EstadosClientesCreateView";
 import ClientesView from "./views/clientes/ClientesView";
 import ClientesCreateView from "./views/clientes/ClientesCreateView";
+import ClasificacionesCreateView from "./views/catalogos/clasificaciones/ClasificacionesCreateView";
+import SubClasificacionesCreateView from "./views/catalogos/subclasificaciones/SubClasificacionesCreateView";
 
 function App() {
   const location = useLocation();
@@ -158,6 +160,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ClientesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clasificaciones/create"
+              element={
+                <ProtectedRoute>
+                  <ClasificacionesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/subclasificaciones/create"
+              element={
+                <ProtectedRoute>
+                  <SubClasificacionesCreateView />
                 </ProtectedRoute>
               }
             />
