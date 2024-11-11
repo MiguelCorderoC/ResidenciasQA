@@ -1,27 +1,50 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-function TiposClientesCreateView() {
+function TiposClientesEditView() {
   const {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm();
+  const { id } = useParams();
 
   const onSubmit = async (data) => {
     const { nom_tipocliente, des_tipocliente } = data;
     try {
-      await axios.post(`${import.meta.env.VITE_DEVICE_IP}/api/tipocliente`, {
-        nom_tipocliente,
-        des_tipocliente,
-      });
-      toast.success("Tipo de cliente registrado");
+      await axios.put(
+        `${import.meta.env.VITE_DEVICE_IP}/api/tipocliente/${id}`,
+        {
+          nom_tipocliente,
+          des_tipocliente,
+        }
+      );
+      toast.success("Tipo de cliente actualizado");
     } catch (error) {
-      toast.error("Error al registrar tipo de cliente");
+      toast.error("Error al actualizar tipo de cliente");
       console.error(error);
     }
   };
+
+  const obtenerTipoClienteId = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_DEVICE_IP}/api/tipocliente/${id}`
+      );
+      setValue("nom_tipocliente", response.data.nom_tipocliente);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al obtener tipo de cliente");
+    }
+  };
+
+  useEffect(() => {
+    obtenerTipoClienteId();
+  }, []);
 
   return (
     <>
@@ -30,7 +53,7 @@ function TiposClientesCreateView() {
           onSubmit={handleSubmit(onSubmit)}
           className="border shadow rounded w-full max-w-2xl flex flex-col gap-3 px-5 py-7"
         >
-          <h2 className="text-4xl font-semibold">Registrar tipo de cliente</h2>
+          <h2 className="text-4xl font-semibold">Editar tipo de cliente</h2>
           <article>
             <label className="font-semibold text-sm">Nombre</label>
             <input
@@ -56,11 +79,11 @@ function TiposClientesCreateView() {
             ></textarea>
           </article>
           <button className="w-full transition duration-300 text-white bg-black font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-800">
-            Registrar tipo de cliente
+            Editar tipo de cliente
           </button>
         </form>
       </section>
     </>
   );
 }
-export default TiposClientesCreateView;
+export default TiposClientesEditView;

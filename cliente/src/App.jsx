@@ -22,6 +22,7 @@ import ClientesView from "./views/clientes/ClientesView";
 import ClientesCreateView from "./views/clientes/ClientesCreateView";
 import ClasificacionesCreateView from "./views/catalogos/clasificaciones/ClasificacionesCreateView";
 import SubClasificacionesCreateView from "./views/catalogos/subclasificaciones/SubClasificacionesCreateView";
+import TiposClientesEditView from "./views/catalogos/tiposclientes/TiposClientesEdit";
 
 function App() {
   const location = useLocation();
@@ -176,6 +177,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SubClasificacionesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tipos-clientes/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <TiposClientesEditView />
                 </ProtectedRoute>
               }
             />

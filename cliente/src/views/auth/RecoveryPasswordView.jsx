@@ -27,10 +27,10 @@ function RecoveryPasswordView() {
       <article className="absolute top-5 right-5">
         <ThemeButton />
       </article>
-      <section className="bg-gray-50 dark:bg-gray-900 flex justify-center items-center h-screen">
+      <section className="bg-gray-50 dark:bg-darkMode-fondo flex justify-center items-center h-screen">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 flex flex-col gap-3 border shadow rounded w-full max-w-md px-5 py-7"
+          className="bg-white dark:bg-darkMode-form dark:text-gray-300 dark:border-darkMode-border flex flex-col gap-3 border shadow rounded w-full max-w-md px-5 py-7"
         >
           <article>
             <h2 className="font-semibold text-3xl">Recupera tu contraseña</h2>
@@ -50,7 +50,7 @@ function RecoveryPasswordView() {
                   message: "Ingresa un correo Gmail",
                 },
               })}
-              className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+              className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white ${
                 errors.email && "ring-2 ring-red-500"
               }`}
             />
@@ -60,7 +60,7 @@ function RecoveryPasswordView() {
               </span>
             )}
           </article>
-          <button className="w-full transition duration-300 text-white bg-black font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-800">
+          <button className="w-full transition duration-300 text-white font-medium rounded text-sm px-5 py-2.5 text-center bg-blue-700 hover:bg-blue-800">
             Enviar enlace
           </button>
         </form>

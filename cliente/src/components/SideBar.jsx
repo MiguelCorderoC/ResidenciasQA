@@ -3,18 +3,14 @@ import { FaHome, FaShoppingCart, FaUser } from "react-icons/fa";
 import { MdEventNote } from "react-icons/md";
 import { BiSolidNotepad } from "react-icons/bi";
 import DropDownMenu from "./DropDownMenu";
-import { useAuth } from "../context/AuthContext";
 import UserSettings from "./UserSettings";
 
 function SideBar() {
-  const auth = useAuth();
-  const { email, displayName, photoURL } = auth.user || {};
-
   return (
     <>
-      <aside className="h-screen w-40 border-r border-gray-400 fixed">
-        <nav className="flex flex-col justify-between border h-full">
-          <ul className="text-xl font-semibold text-gray-800">
+      <aside className="h-screen w-40 border-r border-gray-400 fixed dark:border-darkMode-border dark:bg-darkMode-sidebar">
+        <nav className="flex flex-col justify-between h-full">
+          <ul className="text-xl font-semibold text-gray-800 dark:text-darkMode-font">
             <li>
               <Link
                 to={"/"}

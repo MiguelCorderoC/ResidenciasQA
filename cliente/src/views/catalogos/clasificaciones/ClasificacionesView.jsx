@@ -48,9 +48,9 @@ function ClasificacionesView() {
                 key={item.id}
                 className="odd:bg-gray-100 even:bg-slate-200 border-b dark:border-gray-700"
               >
-                <td className="px-6 py-3">{item.id}</td>
-                <td className="px-6 py-3">{item.nombre}</td>
-                <td className="px-6 py-3">{item.descripcion}</td>
+                <td className="px-6 py-3">{item.id_clasificacion}</td>
+                <td className="px-6 py-3">{item.nom_clasificacion}</td>
+                <td className="px-6 py-3">{item.desc_clasificacion}</td>
               </tr>
             ))}
           </tbody>

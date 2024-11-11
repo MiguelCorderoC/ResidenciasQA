@@ -9,8 +9,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 function UserSettings() {
   const auth = useAuth();
-  const { displayName, photoURL } = auth.user || {};
-  const [dropDown, setDropDown] = useState(false);
+  const { displayName, photoURL, email } = auth.user || {};
 
   const logOut = async () => {
     try {
@@ -23,20 +22,22 @@ function UserSettings() {
 
   return (
     <>
-      <article className="text-gray-800 text-lg font-semibold">
-        <Link
-          to={"/signin"}
-          className="w-full flex items-center gap-1 pl-1 py-1"
-        >
-          <FaUserCircle /> Crear usuario
-        </Link>
+      <article className="text-gray-800 text-lg font-semibold dark:text-darkMode-font">
+        {email === import.meta.env.VITE_USER_ADMIN && (
+          <Link
+            to={"/signin"}
+            className="w-full flex items-center gap-1 pl-1 py-1"
+          >
+            <FaUserCircle /> Crear usuario
+          </Link>
+        )}
         <Link
           to={"/update-profile"}
           className="w-full flex items-center gap-1 pl-1 py-1"
         >
           <IoMdSettings /> Configuracion
         </Link>
-        <article className="flex items-center border-t-2 border-gray-300 gap-2 p-1">
+        <article className="flex items-center border-t-2 border-gray-300 dark:border-darkMode-border gap-2 p-1">
           <img
             src={photoURL}
             alt="Foto usuario"
