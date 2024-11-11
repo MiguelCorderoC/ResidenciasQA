@@ -1,4 +1,4 @@
 function HomeView() {
-  return <>Hola estos son las vistas</>;
+  return <>Home</>;
 }
 export default HomeView;

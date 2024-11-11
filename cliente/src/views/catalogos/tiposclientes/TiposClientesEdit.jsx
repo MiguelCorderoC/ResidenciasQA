@@ -48,10 +48,10 @@ function TiposClientesEditView() {
 
   return (
     <>
-      <section className="text-gray-800 bg-gray-50 dark:bg-gray-900 h-screen flex justify-center items-center">
-        <form
+      <section className="text-gray-800 bg-gray-50 dark:bg-darkMode-fondo dark:text-darkMode-font h-screen flex justify-center items-center">
+      <form
           onSubmit={handleSubmit(onSubmit)}
-          className="border shadow rounded w-full max-w-2xl flex flex-col gap-3 px-5 py-7"
+          className="border shadow rounded w-full max-w-2xl dark:bg-darkMode-form dark:border-darkMode-border flex flex-col gap-3 px-5 py-7"
         >
           <h2 className="text-4xl font-semibold">Editar tipo de cliente</h2>
           <article>
@@ -61,7 +61,7 @@ function TiposClientesEditView() {
               {...register("nom_tipocliente", {
                 required: "Campo obligatorio",
               })}
-              className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+              className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white ${
                 errors.nom_tipocliente && "ring-2 ring-red-500"
               }`}
             />
@@ -75,8 +75,8 @@ function TiposClientesEditView() {
             <label className="font-semibold text-sm">Descripcion</label>
             <textarea
               {...register("des_tipocliente")}
-              className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 w-full block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-            ></textarea>
+              className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white`}
+                ></textarea>
           </article>
           <button className="w-full transition duration-300 text-white bg-black font-medium rounded text-sm px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-800">
             Editar tipo de cliente
