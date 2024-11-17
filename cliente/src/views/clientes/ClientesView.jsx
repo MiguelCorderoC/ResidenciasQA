@@ -64,7 +64,6 @@ function ClientesView() {
               <tr className="bg-gray-200 dark:bg-darkMode-form">
                 <th className="px-6 py-3 text-left font-semibold">Nombre</th>
                 <th className="px-6 py-3 text-left font-semibold">Negocio</th>
-
                 <th className="px-6 py-3 text-left font-semibold">RFC</th>
                 <th className="px-6 py-3 text-left font-semibold">Domicilio</th>
                 <th className="px-6 py-3 text-left font-semibold">

@@ -26,14 +26,14 @@ function UserSettings() {
         {email === import.meta.env.VITE_USER_ADMIN && (
           <Link
             to={"/signin"}
-            className="w-full flex items-center gap-1 pl-1 py-1"
+            className="w-full flex items-center gap-1 pl-1 py-1 hover:bg-darkMode-hoverMenu transition duration-300"
           >
             <FaUserCircle /> Crear usuario
           </Link>
         )}
         <Link
           to={"/update-profile"}
-          className="w-full flex items-center gap-1 pl-1 py-1"
+          className="w-full flex items-center gap-1 pl-1 py-1 hover:bg-darkMode-hoverMenu transition duration-300"
         >
           <IoMdSettings /> Configuracion
         </Link>

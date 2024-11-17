@@ -11,7 +11,7 @@ function SideBar() {
       <aside className="h-screen w-40 border-r border-gray-400 fixed dark:border-darkMode-border dark:bg-darkMode-sidebar">
         <nav className="flex flex-col justify-between h-full">
           <ul className="text-xl font-semibold text-gray-800 dark:text-darkMode-font">
-            <li>
+            <li className="dark:hover:bg-darkMode-hoverMenu transition duration-300">
               <Link
                 to={"/"}
                 className="w-full flex items-center gap-2 pl-1 py-1"
@@ -19,7 +19,7 @@ function SideBar() {
                 <FaHome /> Inicio
               </Link>
             </li>
-            <li>
+            <li className="dark:hover:bg-darkMode-hoverMenu transition duration-300">
               <Link
                 to={"/ordenes"}
                 className="w-full flex items-center gap-2 pl-1 py-1"
@@ -27,7 +27,7 @@ function SideBar() {
                 <MdEventNote /> Ordenes
               </Link>
             </li>
-            <li>
+            <li className="dark:hover:bg-darkMode-hoverMenu transition duration-300">
               <Link
                 to={"/cotizaciones"}
                 className="w-full flex items-center gap-2 pl-1 py-1"
@@ -35,7 +35,7 @@ function SideBar() {
                 <BiSolidNotepad /> Cotizaciones
               </Link>
             </li>
-            <li>
+            <li className="dark:hover:bg-darkMode-hoverMenu transition duration-300">
               <Link
                 to={"/clientes"}
                 className="w-full flex items-center gap-2 pl-1 py-1"
@@ -43,7 +43,7 @@ function SideBar() {
                 <FaUser /> Clientes
               </Link>
             </li>
-            <li>
+            <li className="dark:hover:bg-darkMode-hoverMenu transition duration-300">
               <Link
                 to={"/productos"}
                 className="w-full flex items-center gap-2 pl-1 py-1"

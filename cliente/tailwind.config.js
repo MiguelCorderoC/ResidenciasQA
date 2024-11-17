@@ -13,9 +13,10 @@ export default {
           font: "#d1d5db",
           table: "#151515",
           tableOdd: "#0C0C0C",
+          hoverMenu: "#111827",
         },
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };

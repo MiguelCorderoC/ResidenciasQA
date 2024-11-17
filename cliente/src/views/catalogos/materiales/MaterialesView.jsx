@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
-function TiposClientesView() {
-  const [tiposclientes, setTiposclientes] = useState([]);
+function MaterialesView() {
+  const [materiales, setMateriales] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  const obtenerTiposclientes = async () => {
+  const obtenerMateriales = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEVICE_IP}/api/tipocliente`
+        `${import.meta.env.VITE_DEVICE_IP}/api/materiales`
       );
-      setTiposclientes(response.data);
+      setMateriales(response.data);
     } catch (error) {
       console.error(error);
       toast.error("Error al obtener tipos de clientes");
@@ -20,18 +20,18 @@ function TiposClientesView() {
   };
 
   useEffect(() => {
-    obtenerTiposclientes();
+    obtenerMateriales();
   }, []);
 
-  const filteredClientes = tiposclientes.filter((item) =>
-    item.nom_tpcliente?.toLowerCase().includes(searchText.toLowerCase())
+  const filteredClientes = materiales.filter((item) =>
+    item.nom_material?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
     <>
       <section className="min-h-screen text-gray-800 bg-gray-50 dark:bg-darkMode-fondo dark:text-darkMode-font">
         <article className="flex items-center justify-between p-5">
-          <h2 className="text-4xl font-semibold">Tipos de clientes</h2>
+          <h2 className="text-4xl font-semibold">Materiales</h2>
           <article className="flex items-center gap-2">
             <input
               type="text"
@@ -41,7 +41,7 @@ function TiposClientesView() {
               className={`border h-8 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-form dark:border-gray-600 dark:text-white`}
             />
             <Link
-              to={"/tipos-clientes/create"}
+              to={"/materiales/create"}
               className="transition h-10 duration-300 text-white bg-green-800 hover:bg-green-900 font-medium rounded text-sm px-5 py-2.5 text-center"
             >
               Nuevo
@@ -65,11 +65,11 @@ function TiposClientesView() {
                   key={i}
                   className="odd:bg-gray-100 even:bg-slate-200 border-b dark:border-darkMode-border dark:bg-darkMode-table dark:odd:bg-darkMode-tableOdd"
                 >
-                  <td className="px-6 py-3">{item.nom_tpcliente}</td>
-                  <td className="px-6 py-3">{item.desc_tpcliente}</td>
+                  <td className="px-6 py-3">{item.nom_material}</td>
+                  <td className="px-6 py-3">{item.desc_material}</td>
                   <td className="px-6 py-3">
                     <Link
-                      to={`/tipos-clientes/edit/${item.id_tpCliente}`}
+                      to={`/materiales/edit/${item.id_material}`}
                       className="rounded bg-blue-600 text-white p-1 text-sm font-medium"
                     >
                       Editar
@@ -92,4 +92,4 @@ function TiposClientesView() {
   );
 }
 
-export default TiposClientesView;
+export default MaterialesView;

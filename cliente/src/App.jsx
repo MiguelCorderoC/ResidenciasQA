@@ -23,6 +23,18 @@ import ClientesCreateView from "./views/clientes/ClientesCreateView";
 import ClasificacionesCreateView from "./views/catalogos/clasificaciones/ClasificacionesCreateView";
 import SubClasificacionesCreateView from "./views/catalogos/subclasificaciones/SubClasificacionesCreateView";
 import TiposClientesEditView from "./views/catalogos/tiposclientes/TiposClientesEdit";
+import MaterialesView from "./views/catalogos/materiales/MaterialesView";
+import MaterialesCreateView from "./views/catalogos/materiales/MaterialesCreateView";
+import UnidadesView from "./views/catalogos/unidades/UnidadesView";
+import UnidadesCreateView from "./views/catalogos/unidades/UnidadesCreateView";
+import AcabadosView from "./views/catalogos/acabados/AcabadosView";
+import AcabadosCreateView from "./views/catalogos/acabados/AcabadosCreateView";
+import TipoVentasView from "./views/catalogos/tipoventas/TipoVentasView";
+import TipoVentasCreateView from "./views/catalogos/tipoventas/TipoVentasCreateView";
+import ProcesosView from "./views/catalogos/procesos/ProcesosView";
+import ProcesosCreateView from "./views/catalogos/procesos/ProcesosCreateView";
+import FormaPagosView from "./views/catalogos/formapagos/FormaPagosView";
+import FormaPagosCreateView from "./views/catalogos/formapagos/FormaPagosCreateView";
 
 function App() {
   const location = useLocation();
@@ -185,6 +197,102 @@ function App() {
               element={
                 <ProtectedRoute>
                   <TiposClientesEditView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/materiales"
+              element={
+                <ProtectedRoute>
+                  <MaterialesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/materiales/create"
+              element={
+                <ProtectedRoute>
+                  <MaterialesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/unidades"
+              element={
+                <ProtectedRoute>
+                  <UnidadesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/unidades/create"
+              element={
+                <ProtectedRoute>
+                  <UnidadesCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/acabados"
+              element={
+                <ProtectedRoute>
+                  <AcabadosView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/acabados/create"
+              element={
+                <ProtectedRoute>
+                  <AcabadosCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tipo-ventas"
+              element={
+                <ProtectedRoute>
+                  <TipoVentasView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tipo-ventas/create"
+              element={
+                <ProtectedRoute>
+                  <TipoVentasCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/procesos"
+              element={
+                <ProtectedRoute>
+                  <ProcesosView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/procesos/create"
+              element={
+                <ProtectedRoute>
+                  <ProcesosCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/formas-pagos"
+              element={
+                <ProtectedRoute>
+                  <FormaPagosView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/formas-pagos/create"
+              element={
+                <ProtectedRoute>
+                  <FormaPagosCreateView />
                 </ProtectedRoute>
               }
             />
