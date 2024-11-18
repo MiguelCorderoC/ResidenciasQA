@@ -18,7 +18,7 @@ function CotizacionesCreateView() {
     formState: { errors },
   } = useForm({ defaultValues: { id_tipos_ventas: "1", id_clientes: "1" } });
   const auth = useAuth();
-  const { displayName } = auth.user || {};
+  const { displayName, email } = auth.user || {};
 
   const handleAddProductosForms = () => {
     setProductosForms([
@@ -56,7 +56,7 @@ function CotizacionesCreateView() {
   const obtenerTiposVentas = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEVICE_IP}/api/tipos-ventas`
+        `${import.meta.env.VITE_DEVICE_IP}/api/tipoventa`
       );
       setTiposVentas(response.data);
     } catch (error) {
@@ -68,7 +68,7 @@ function CotizacionesCreateView() {
   const obtenerProductos = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEVICE_IP}/api/productos`
+        `${import.meta.env.VITE_DEVICE_IP}/api/producto`
       );
       setProductos(response.data);
     } catch (error) {
@@ -84,31 +84,30 @@ function CotizacionesCreateView() {
 
   const onSubmit = async (data) => {
     const {
+      idCliente,
+      idtpVenta,
       subtotal,
       iva,
       total,
-      fecha_vigencia,
-      estado,
-      factura,
+      fechavigencia,
+      facturar,
       observaciones,
-      id_clientes,
-      id_tipos_ventas,
     } = data;
-
+    console.log(data);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_DEVICE_IP}/api/cotizaciones`,
+        `http://localhost:4000/api/cotizaciones`,
         {
-          p_subtotal: subtotal,
-          p_iva: iva,
-          p_total: total,
-          p_fecha_vigencia: fecha_vigencia,
-          p_factura: factura ? "Y" : "N",
-          p_estado: estado ? "Y" : "N",
-          p_personal: displayName,
-          p_observaciones: observaciones,
-          p_id_clientes: id_clientes,
-          p_id_tipos_ventas: id_tipos_ventas,
+          idCliente,
+          idtpVenta,
+          subtotal,
+          iva,
+          total,
+          fechavigencia,
+          facturar: facturar ? "1" : "0",
+          personal: displayName,
+          observaciones: observaciones,
+          correo_del_personal: email,
         }
       );
       console.log(data);
@@ -127,15 +126,15 @@ function CotizacionesCreateView() {
   }, []);
   return (
     <>
-      <section className="text-gray-800 bg-gray-50 dark:bg-gray-900 h-screen flex justify-center items-center">
+      <section className="text-gray-800 bg-gray-50 dark:bg-darkMode-fondo dark:text-darkMode-font h-screen flex justify-center items-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="border shadow rounded w-full max-w-5xl flex flex-col px-5 gap-3 pb-2"
+          className="border shadow rounded w-full max-w-5xl dark:bg-darkMode-form dark:border-darkMode-border flex flex-col gap-3 px-5 py-1"
         >
           <h2 className="text-4xl font-semibold">Cotizacion</h2>
           <article className="flex items-center gap-3">
             <article>
-              <label className="font-semibold text-sm">ID</label>
+              <label className="font-semibold text-sm">Folio</label>
               <input
                 className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 type="text"
@@ -146,12 +145,12 @@ function CotizacionesCreateView() {
             <article className="flex-grow">
               <label className="font-semibold text-sm">Cliente</label>
               <select
-                {...register("id_clientes")}
+                {...register("idCliente")}
                 className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full"
               >
                 {clientes.map((item, i) => (
-                  <option key={i} value={item.id}>
-                    {item.nombre + " " + item.apellido_paterno}
+                  <option key={i} value={item.id_cliente}>
+                    {item["Nombre Completo"]}
                   </option>
                 ))}
               </select>
@@ -159,12 +158,12 @@ function CotizacionesCreateView() {
             <article className="flex-grow">
               <label className="font-semibold text-sm">Tipo de venta</label>
               <select
-                {...register("id_tipos_ventas")}
+                {...register("idtpVenta")}
                 className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full"
               >
                 {tiposVentas.map((item, i) => (
-                  <option key={i} value={item.id}>
-                    {item.nombre}
+                  <option key={i} value={item.id_tpVenta}>
+                    {item.nom_tpVenta}
                   </option>
                 ))}
               </select>
@@ -173,7 +172,7 @@ function CotizacionesCreateView() {
               <label className="font-semibold text-sm">Fecha de vigencia</label>
               <input
                 type="date"
-                {...register("fecha_vigencia")}
+                {...register("fechavigencia")}
                 className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full"
               />
             </article>
@@ -181,22 +180,18 @@ function CotizacionesCreateView() {
           <article className="flex gap-3 justify-end">
             <article className="flex items-center gap-2">
               <label className="font-semibold text-sm">Factura</label>
-              <input type="checkbox" {...register("factura")} />
-            </article>
-            <article className="flex items-center gap-2">
-              <label className="font-semibold text-sm">Estado</label>
-              <input type="checkbox" {...register("estado")} />
+              <input type="checkbox" {...register("facturar")} />
             </article>
           </article>
-          <div className="h-40 border overflow-y-auto p-1">
+          <div className="h-40 border overflow-y-auto p-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400">
             {productosForms.map((items) => (
               <article key={items.id} className="flex gap-5">
                 <article className="flex-[2]">
                   <label className="font-semibold text-sm">Producto</label>
                   <select className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     {productos.map((item, i) => (
-                      <option key={i} value={item.producto_id}>
-                        {item.subclasificacion_nombre}
+                      <option key={i} value={item.id_producto}>
+                        {item.nombre_prod}
                       </option>
                     ))}
                   </select>
@@ -256,7 +251,7 @@ function CotizacionesCreateView() {
           </div>
           <article className="flex justify-center items-center mt-1">
             <button type="button" onClick={handleAddProductosForms}>
-              <FaPlusCircle className="size-6 text-black" />
+              <FaPlusCircle className="size-6 text-black dark:text-darkMode-font" />
             </button>
           </article>
           <article className="flex gap-2">
