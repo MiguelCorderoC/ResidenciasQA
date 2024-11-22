@@ -96,7 +96,7 @@ function CotizacionesCreateView() {
     console.log(data);
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/cotizaciones`,
+        `${import.meta.env.VITE_DEVICE_IP}/api/cotizaciones`,
         {
           idCliente,
           idtpVenta,
