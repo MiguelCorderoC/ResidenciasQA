@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
+import { v4 as uuidv4 } from "uuid"; // Instala uuid: npm install uuid
 
 function CotizacionesCreateView() {
   const [id, setId] = useState("*****");
@@ -12,34 +13,14 @@ function CotizacionesCreateView() {
   const [productos, setProductos] = useState([]);
   const [tiposVentas, setTiposVentas] = useState([]);
   const [productosForms, setProductosForms] = useState([]);
+  const [usarPrecioConIva, setUsarPrecioConIva] = useState(false); // Nuevo estado
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({ defaultValues: { id_tipos_ventas: "1", id_clientes: "1" } });
+  } = useForm({ defaultValues: { idtpVenta: 1, idCliente: 1 } });
   const auth = useAuth();
   const { displayName, email } = auth.user || {};
-
-  const handleAddProductosForms = () => {
-    setProductosForms([
-      ...productosForms,
-      {
-        id: productosForms.length + 1,
-        content: `Artículo ${productosForms.length + 1}`,
-      },
-    ]);
-  };
-
-  const obtenerProductoId = async (id) => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_DEVICE_IP}/api/productos/${id}`
-      );
-    } catch (error) {
-      toast.error("Error al obtener Producto por id");
-      console.error(error);
-    }
-  };
 
   const obtenerClientes = async () => {
     try {
@@ -77,45 +58,179 @@ function CotizacionesCreateView() {
     }
   };
 
+  const handleChange = (id, field, value) => {
+    setProductosForms((prev) =>
+      prev.map((producto) => {
+        if (producto.id === id) {
+          const updatedProducto = { ...producto, [field]: value };
+
+          // Recalcular el importe
+          const base = parseFloat(updatedProducto.prod_base) || 0;
+          const altura = parseFloat(updatedProducto.prod_altura) || 0;
+          const cantidad = parseFloat(updatedProducto.cantidad) || 0;
+          const importe =
+            base *
+            altura *
+            cantidad *
+            parseFloat(updatedProducto.precio_Uni || 0);
+
+          return { ...updatedProducto, importe };
+        }
+        return producto;
+      })
+    );
+  };
+
   const handleDelete = (id) => {
-    const updatedForms = productosForms.filter((item) => item.id !== id);
-    setProductosForms(updatedForms);
+    setProductosForms((prev) => prev.filter((producto) => producto.id !== id));
   };
 
   const onSubmit = async (data) => {
-    const {
+    const { idCliente, idtpVenta, fechavigencia, facturar, observaciones } =
+      data;
+
+    // Preparar la cotización
+    const cotizacion = {
       idCliente,
       idtpVenta,
+      fechavigencia,
+      facturar: facturar ? "1" : "0",
+      personal: displayName,
+      observaciones,
+      correo_del_personal: email,
       subtotal,
       iva,
       total,
-      fechavigencia,
-      facturar,
-      observaciones,
-    } = data;
-    console.log(data);
+    };
+
     try {
+      // Registrar cotización en el backend
       const response = await axios.post(
         `${import.meta.env.VITE_DEVICE_IP}/api/cotizaciones`,
-        {
-          idCliente,
-          idtpVenta,
-          subtotal,
-          iva,
-          total,
-          fechavigencia,
-          facturar: facturar ? "1" : "0",
-          personal: displayName,
-          observaciones: observaciones,
-          correo_del_personal: email,
-        }
+        cotizacion
       );
-      console.log(data);
-      setId(response.data.id);
-      toast.success("Cotizacion registrada");
+
+      // Obtener ID de la cotización creada
+      const cotizacionId = response.data;
+
+      // Agregar productos asociados a la cotización
+      await Promise.all(
+        productosForms.map((producto) =>
+          axios.post(
+            `${
+              import.meta.env.VITE_DEVICE_IP
+            }/api/cotizaciones/producto/${cotizacionId}`,
+            {
+              idProducto: producto.id_producto,
+              cantidad: producto.cantidad,
+              base: producto.prod_base,
+              altura: producto.prod_altura,
+              precioUnitario: producto.precio_Uni,
+              importe: producto.importe,
+            }
+          )
+        )
+      );
+
+      setId(cotizacionId);
+      toast.success("Cotización registrada correctamente.");
     } catch (error) {
-      toast.error("Error al registrar cotizacion");
-      console.error(error);
+      console.error("Error al registrar cotización:", error);
+      toast.error("Error al registrar la cotización.");
+    }
+  };
+
+  const handleAddProductosForms = () => {
+    setProductosForms([
+      ...productosForms,
+      {
+        id: uuidv4(),
+        id_cotizacion: "",
+        id_producto: "",
+        cantidad: "",
+        prod_base: "",
+        prod_altura: "",
+        instalacion: false,
+        precio_Uni: "",
+        importe: "",
+      },
+    ]);
+  };
+  const handleTogglePrecio = (id) => {
+    setProductosForms((prev) =>
+      prev.map((producto) => {
+        if (producto.id === id) {
+          const instalacion = !producto.instalacion;
+          const productoSeleccionado = productos.find(
+            (prod) => prod.id_producto.toString() === producto.id_producto
+          );
+
+          const precio_Uni = instalacion
+            ? productoSeleccionado?.precio_con || 0
+            : productoSeleccionado?.precio_sin || 0;
+
+          // Recalcular el importe con el nuevo precio unitario
+          const base = parseFloat(producto.prod_base) || 0;
+          const altura = parseFloat(producto.prod_altura) || 0;
+          const cantidad = parseFloat(producto.cantidad) || 0;
+          const importe = base * altura * cantidad * precio_Uni;
+
+          return {
+            ...producto,
+            instalacion,
+            precio_Uni,
+            importe,
+          };
+        }
+        return producto;
+      })
+    );
+  };
+  const calcularTotales = () => {
+    const subtotal = productosForms.reduce(
+      (sum, producto) => sum + (parseFloat(producto.importe) || 0),
+      0
+    );
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+
+    return { subtotal, iva, total };
+  };
+
+  const [subtotal, setSubtotal] = useState(0);
+  const [iva, setIva] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const { subtotal, iva, total } = calcularTotales();
+    setSubtotal(subtotal);
+    setIva(iva);
+    setTotal(total);
+  }, [productosForms]);
+
+  const handleProductoChange = (id, value) => {
+    const productoSeleccionado = productos.find(
+      (prod) => prod.id_producto.toString() === value
+    );
+
+    if (productoSeleccionado) {
+      setProductosForms((prev) =>
+        prev.map((producto) => {
+          if (producto.id === id) {
+            const precio_Uni = producto.instalacion
+              ? productoSeleccionado.precio_con
+              : productoSeleccionado.precio_sin;
+
+            return {
+              ...producto,
+              id_producto: value,
+              precio_Uni,
+              importe: 0,
+            };
+          }
+          return producto;
+        })
+      );
     }
   };
 
@@ -188,38 +303,61 @@ function CotizacionesCreateView() {
               <article key={items.id} className="flex gap-5">
                 <article className="flex-[2]">
                   <label className="font-semibold text-sm">Producto</label>
-                  <select className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    {productos.map((item, i) => (
-                      <option key={i} value={item.id_producto}>
+                  <select
+                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.id_producto}
+                    onChange={(e) =>
+                      handleProductoChange(items.id, e.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un producto</option>
+                    {productos.map((item) => (
+                      <option key={item.id_producto} value={item.id_producto}>
                         {item.nombre_prod}
                       </option>
                     ))}
                   </select>
+                </article>
+                <article className="flex items-end gap-2">
+                  <label className="font-semibold text-sm">Instalacion</label>
+                  <input
+                    type="checkbox"
+                    checked={items.instalacion} // Usa el estado específico del producto
+                    onChange={() => handleTogglePrecio(items.id)} // Cambia solo el producto actual
+                  />
                 </article>
                 <article className="flex-1">
                   <label className="font-semibold text-sm">Cantidad</label>
                   <input
                     type="number"
                     className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.cantidad}
+                    onChange={(e) =>
+                      handleChange(items.id, "cantidad", e.target.value)
+                    }
                   />
                 </article>
                 <article className="flex-1">
                   <label className="font-semibold text-sm">Base</label>
                   <input
                     type="number"
-                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.prod_base}
+                    onChange={(e) =>
+                      handleChange(items.id, "prod_base", e.target.value)
+                    }
                   />
                 </article>
                 <article className="flex-1">
                   <label className="font-semibold text-sm">Altura</label>
                   <input
                     type="number"
-                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.prod_altura}
+                    onChange={(e) =>
+                      handleChange(items.id, "prod_altura", e.target.value)
+                    }
                   />
-                </article>
-                <article className="flex items-center gap-2">
-                  <label className="font-semibold text-sm">Instalacion</label>
-                  <input type="checkbox" />
                 </article>
                 <article className="flex-1">
                   <label className="font-semibold text-sm">
@@ -227,14 +365,21 @@ function CotizacionesCreateView() {
                   </label>
                   <input
                     type="number"
-                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.precio_Uni}
+                    onChange={(e) =>
+                      handleChange(items.id, "precio_Uni", e.target.value)
+                    }
+                    readOnly
                   />
                 </article>
                 <article className="flex-1">
                   <label className="font-semibold text-sm">Total</label>
                   <input
                     type="number"
-                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    value={items.importe}
+                    readOnly // El importe es calculado automáticamente
                   />
                 </article>
                 <article className="flex items-end">
@@ -249,6 +394,7 @@ function CotizacionesCreateView() {
               </article>
             ))}
           </div>
+
           <article className="flex justify-center items-center mt-1">
             <button type="button" onClick={handleAddProductosForms}>
               <FaPlusCircle className="size-6 text-black dark:text-darkMode-font" />
@@ -267,7 +413,8 @@ function CotizacionesCreateView() {
                 <label className="font-semibold text-sm">Total sin IVA</label>
                 <input
                   type="text"
-                  {...register("subtotal")}
+                  value={subtotal.toFixed(2)} // Mostrar con dos decimales
+                  readOnly
                   className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </article>
@@ -275,7 +422,8 @@ function CotizacionesCreateView() {
                 <label className="font-semibold text-sm">IVA</label>
                 <input
                   type="text"
-                  {...register("iva")}
+                  value={iva.toFixed(2)} // Mostrar con dos decimales
+                  readOnly
                   className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </article>
@@ -283,7 +431,8 @@ function CotizacionesCreateView() {
                 <label className="font-semibold text-sm">Total</label>
                 <input
                   type="text"
-                  {...register("total")}
+                  value={total.toFixed(2)} // Mostrar con dos decimales
+                  readOnly
                   className="border h-7 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:ring-2 focus:border-blue-400 transition duration-300 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </article>
@@ -297,4 +446,5 @@ function CotizacionesCreateView() {
     </>
   );
 }
+
 export default CotizacionesCreateView;

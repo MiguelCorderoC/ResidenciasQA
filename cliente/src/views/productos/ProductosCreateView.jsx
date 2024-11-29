@@ -111,15 +111,6 @@ function ProductosCreateView() {
       >
         <h2 className="text-4xl font-semibold">Productos</h2>
         <article className="flex gap-4">
-          <article>
-            <label className="font-semibold text-sm">ID</label>
-            <input
-              type="text"
-              value={id}
-              disabled
-              className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white"
-            />
-          </article>
           <article className="flex-grow">
             <label className="font-semibold text-sm">Sub clasificacion</label>
             <select
@@ -195,14 +186,14 @@ function ProductosCreateView() {
           </article>
           <article className="flex-grow">
             <label className="font-semibold text-sm">
-              Precio con instalacion
+              Precio con instalación
             </label>
             <input
               type="number"
               {...register("precio_con_inst")}
               value={precioConInstalacion}
               onChange={(e) => setPrecioConInstalacion(e.target.value)}
-              disabled={instalacion === "N"}
+              disabled={instalacion === "0"}
               className="border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white"
             />
           </article>

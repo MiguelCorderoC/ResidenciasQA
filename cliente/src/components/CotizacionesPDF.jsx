@@ -107,11 +107,6 @@ function CotizacionesPDF({
           <View>
             <Text style={styles.fontBold}>Cantidad</Text>
             <View>
-              {/*<Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>1</Text>
-              <Text>3</Text>*/}
               {productos.map((item, i) => (
                 <Text key={i}>{item.cantidad}</Text>
               ))}
@@ -120,11 +115,6 @@ function CotizacionesPDF({
           <View>
             <Text style={styles.fontBold}>Descripcion</Text>
             <View>
-              {/*<Text>Impresion en PVC 3mm escuela activa integral</Text>
-              <Text>Impresion en PVC 3mm escuela activa integral</Text>
-              <Text>Impresion en PVC 3mm escuela activa integral</Text>
-              <Text>Impresion en PVC 3mm escuela activa integral</Text>
-              <Text>Impresion de lona escuela activa integral</Text>*/}
               {productos.map((item, i) => (
                 <Text key={i}>{item.Descripcion}</Text>
               ))}
@@ -133,11 +123,6 @@ function CotizacionesPDF({
           <View>
             <Text style={styles.fontBold}>Medida/Unidad</Text>
             <View>
-              {/*<Text>1.50 X 1.50</Text>
-              <Text>1.00 X 1.00</Text>
-              <Text>1.40 X 0.60</Text>
-              <Text>2.00 X 0.65</Text>
-              <Text>0.60 X 1.60</Text>*/}
               {productos.map((item, i) => (
                 <Text key={i}>
                   {item.prod_base} X {item.prod_altura}
@@ -148,26 +133,16 @@ function CotizacionesPDF({
           <View>
             <Text style={styles.fontBold}>Precio unitario</Text>
             <View>
-              {/*<Text>$1,125.00</Text>
-              <Text>$500.00</Text>
-              <Text>$500.00</Text>
-              <Text>$650.00</Text>
-              <Text>$150.00</Text>*/}
               {productos.map((item, i) => (
-                <Text key={i}>{item.precio_Uni}</Text>
+                <Text key={i}>${item.precio_Uni}</Text>
               ))}
             </View>
           </View>
           <View>
             <Text style={styles.fontBold}>Total</Text>
             <View style={styles.tableRows}>
-              {/*<Text>$1,125.00</Text>
-              <Text>$500.00</Text>
-              <Text>$500.00</Text>
-              <Text>$650.00</Text>
-              <Text>$150.00</Text>*/}
               {productos.map((item, i) => (
-                <Text key={i}>{item.importe}</Text>
+                <Text key={i}>${item.importe}</Text>
               ))}
             </View>
           </View>

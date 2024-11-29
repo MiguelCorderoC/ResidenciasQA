@@ -16,11 +16,12 @@ function SubClasificacionesCreateView() {
       data;
     try {
       await axios.post(
-        `${import.meta.env.VITE_DEVICE_IP}/api/subclasificaciones`,
+        `${
+          import.meta.env.VITE_DEVICE_IP
+        }/api/subclasificaciones/${clasificacion_id}`,
         {
           nom_subclasificacion,
           des_subclasificacion,
-          clasificacion_id,
         }
       );
       toast.success("Subclasificacion registrada");

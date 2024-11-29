@@ -4,11 +4,16 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import CotizacionesPDF from "../../components/CotizacionesPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { FaCheckCircle, FaPrint } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
+import { BsFillPersonCheckFill } from "react-icons/bs";
 
 function CotizacionesView() {
   const [cotizaciones, setCotizaciones] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [productos, setProductos] = useState([]);
+  const auth = useAuth();
+  const { email, displayName } = auth.user || {};
 
   const obtenerCotizaciones = async () => {
     try {
@@ -25,7 +30,7 @@ function CotizacionesView() {
   const obtenerProductos = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEVICE_IP}/api/producto/cotizacion/2`
+        `${import.meta.env.VITE_DEVICE_IP}/api/prodcot`
       );
       setProductos(response.data);
     } catch (error) {
@@ -50,6 +55,32 @@ function CotizacionesView() {
       item.personal?.toLowerCase().includes(searchText.toLowerCase()) ||
       item.correo_pers?.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const aprobarCotizacion = (id) => {
+    try {
+      toast.info("Seguro que desea aprobar la cotizacion " + id, {
+        action: {
+          label: "Aceptar",
+          onClick: async () => {
+            try {
+              await axios.post(`http://localhost:4000/api/ordenes/` + id, {
+                correo: email,
+                personalaceptado: displayName,
+              });
+              toast.success("Cotizacion aprobada");
+            } catch (error) {
+              console.error(error);
+              toast.error("Error al agregar cotizacion");
+            }
+          },
+        },
+        duration: Infinity,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al aprobar cotizacion");
+    }
+  };
 
   return (
     <>
@@ -99,7 +130,7 @@ function CotizacionesView() {
                   key={i}
                   className="odd:bg-gray-100 even:bg-slate-200 border-b dark:border-darkMode-border dark:bg-darkMode-table dark:odd:bg-darkMode-tableOdd"
                 >
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-3 flex items-center gap-2">
                     <PDFDownloadLink
                       document={
                         <CotizacionesPDF
@@ -118,6 +149,7 @@ function CotizacionesView() {
                             year: "numeric",
                           })}
                           cliente={item["Nombre Completo"]}
+                          negocio={item.nom_negocio}
                           totalSinIva={item.subTotal}
                           iva={item.iva}
                           total={item.total}
@@ -129,18 +161,35 @@ function CotizacionesView() {
                         />
                       }
                       fileName="mi-archivo.pdf"
-                      className="transition duration-300 text-gray-200 bg-orange-700 hover:bg-orange-800 font-medium rounded text-sm px-2 py-1 text-center"
+                      className="transition duration-300 text-gray-200 bg-orange-700 hover:bg-orange-800 font-medium rounded text-sm px-2 py-1.5 text-center"
                     >
                       {({ blob, url, loading, error }) =>
-                        loading ? "Generando PDF..." : "Imprimir"
+                        loading ? "Generando PDF..." : <FaPrint />
                       }
                     </PDFDownloadLink>
+                    {item.estatus === 0 ? (
+                      <button
+                        onClick={() => {
+                          aprobarCotizacion(item.id_cotizacion);
+                        }}
+                        className="transition duration-300 text-gray-200 bg-blue-700 hover:bg-blue-800 font-medium rounded text-sm px-2 py-1.5 text-center"
+                      >
+                        <FaCheckCircle />
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        className="transition duration-300 text-gray-200 bg-green-700 hover:bg-green-800 font-medium rounded text-sm px-2 py-1.5 text-center"
+                      >
+                        <BsFillPersonCheckFill />
+                      </button>
+                    )}
                   </td>
                   <td className="px-6 py-3">{item.id_cotizacion}</td>
                   <td className="px-6 py-3 whitespace-nowrap">
                     {item["Nombre Completo"]}
                   </td>
-                  <td className="px-6 py-3">{item.cliente_negocio}</td>
+                  <td className="px-6 py-3">{item.nom_negocio}</td>
                   <td className="px-6 py-3">{item.nom_tpVenta}</td>
                   <td className="px-6 py-3">
                     {new Date(item.fechaEmision).toLocaleDateString("es-ES", {
@@ -166,7 +215,9 @@ function CotizacionesView() {
                     {item.personal}
                   </td>
                   <td className="px-6 py-3">{item.correo_pers}</td>
-                  <td className="px-6 py-3">{item.observacion}</td>
+                  <td className="px-6 py-3" colSpan={6}>
+                    {item.observacion}
+                  </td>
                   <td className="px-6 py-3">${item.total}</td>
                 </tr>
               ))}

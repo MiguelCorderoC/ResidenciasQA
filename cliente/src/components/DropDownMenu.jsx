@@ -60,6 +60,14 @@ function DropDownMenu() {
         </li>
         <li className="hover:bg-darkMode-hoverMenu transition duration-300">
           <Link
+            to={"/estados"}
+            className="w-full flex items-center gap-2 pl-2 py-1 text-nowrap"
+          >
+            <FaRulerCombined /> Estado cobranza
+          </Link>
+        </li>
+        <li className="hover:bg-darkMode-hoverMenu transition duration-300">
+          <Link
             to={"/formas-pagos"}
             className="w-full flex items-center gap-2 pl-2 py-1 text-wrap"
           >

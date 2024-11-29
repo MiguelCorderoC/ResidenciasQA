@@ -10,11 +10,11 @@ function ProcesosCreateView() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const { nom_proceso, des_proceso } = data;
+    const { nom_proceso, desc_proceso } = data;
     try {
       await axios.post(`${import.meta.env.VITE_DEVICE_IP}/api/procesos`, {
         nom_proceso,
-        des_proceso,
+        desc_proceso,
       });
       toast.success("Proceso registrado");
     } catch (error) {
@@ -51,7 +51,7 @@ function ProcesosCreateView() {
           <article>
             <label className="font-semibold text-sm">Descripcion</label>
             <textarea
-              {...register("des_proceso")}
+              {...register("desc_proceso")}
               className={`border rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-400 focus:border-blue-400 dark:focus:ring-blue-600 focus:ring-2 dark:focus:border-blue-600 transition duration-300 w-full block p-2.5 dark:bg-darkMode-fondo dark:border-gray-600 dark:text-white`}
             ></textarea>
           </article>

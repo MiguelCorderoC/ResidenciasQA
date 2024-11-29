@@ -35,6 +35,9 @@ import ProcesosView from "./views/catalogos/procesos/ProcesosView";
 import ProcesosCreateView from "./views/catalogos/procesos/ProcesosCreateView";
 import FormaPagosView from "./views/catalogos/formapagos/FormaPagosView";
 import FormaPagosCreateView from "./views/catalogos/formapagos/FormaPagosCreateView";
+import EstadoCobranzaView from "./views/catalogos/estadocobranza/EstadoCobranzaView";
+import EstadosCobranzaCreateView from "./views/catalogos/estadocobranza/EstadoCobranzaCreateView";
+import OrdenesView from "./views/ordenes/OrdenesView";
 
 function App() {
   const location = useLocation();
@@ -293,6 +296,30 @@ function App() {
               element={
                 <ProtectedRoute>
                   <FormaPagosCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/estados"
+              element={
+                <ProtectedRoute>
+                  <EstadoCobranzaView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/estados/create"
+              element={
+                <ProtectedRoute>
+                  <EstadosCobranzaCreateView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ordenes"
+              element={
+                <ProtectedRoute>
+                  <OrdenesView />
                 </ProtectedRoute>
               }
             />
