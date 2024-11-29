@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
-import { v4 as uuidv4 } from "uuid"; // Instala uuid: npm install uuid
+import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
 
 function CotizacionesCreateView() {

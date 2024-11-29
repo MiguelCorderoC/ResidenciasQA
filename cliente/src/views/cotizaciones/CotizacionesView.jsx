@@ -163,7 +163,13 @@ function CotizacionesView() {
                           )}
                         />
                       }
-                      fileName="mi-archivo.pdf"
+                      fileName={
+                        "cotizacion-" +
+                        item.id_cotizacion +
+                        "-" +
+                        item.nom_negocio +
+                        ".pdf"
+                      }
                       className="transition duration-300 text-gray-200 bg-orange-700 hover:bg-orange-800 font-medium rounded text-sm px-2 py-1.5 text-center"
                     >
                       {({ blob, url, loading, error }) =>
