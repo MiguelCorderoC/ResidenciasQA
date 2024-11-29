@@ -63,10 +63,13 @@ function CotizacionesView() {
           label: "Aceptar",
           onClick: async () => {
             try {
-              await axios.post(`http://localhost:4000/api/ordenes/` + id, {
-                correo: email,
-                personalaceptado: displayName,
-              });
+              await axios.post(
+                `${import.meta.env.VITE_DEVICE_IP}/api/ordentrabajo/${id}`,
+                {
+                  correo: email,
+                  personalaceptado: displayName,
+                }
+              );
               toast.success("Cotizacion aprobada");
             } catch (error) {
               console.error(error);
@@ -215,9 +218,7 @@ function CotizacionesView() {
                     {item.personal}
                   </td>
                   <td className="px-6 py-3">{item.correo_pers}</td>
-                  <td className="px-6 py-3" colSpan={6}>
-                    {item.observacion}
-                  </td>
+                  <td className="px-6 py-3">{item.observacion}</td>
                   <td className="px-6 py-3">${item.total}</td>
                 </tr>
               ))}
