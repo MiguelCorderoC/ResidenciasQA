@@ -33,6 +33,17 @@ function OrdenesView() {
     }
   };
 
+  const imprimirOrden = async (id) => {
+    try {
+      await axios.get(
+        `${import.meta.env.VITE_DEVICE_IP}/api/ordentrabajo/imprimir/${id}`
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al generar pdf");
+    }
+  };
+
   useEffect(() => {
     obtenerOrdenes();
   }, []);
@@ -86,7 +97,14 @@ function OrdenesView() {
                   className="odd:bg-gray-100 even:bg-slate-200 border-b dark:border-darkMode-border dark:bg-darkMode-table dark:odd:bg-darkMode-tableOdd"
                 >
                   <td className="px-6 py-3">
-                    <button>Pdf</button>
+                    <button
+                      onClick={() => {
+                        imprimirOrden(item.id_ordenTrabajo);
+                      }}
+                      className="p-2 rounded bg-red-600 text-white font-semibold"
+                    >
+                      PDF
+                    </button>
                   </td>
                   <td className="px-6 py-3">{item.id_ordenTrabajo}</td>
                   <td className="px-6 py-3">{item["Nombre Completo"]}</td>

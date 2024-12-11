@@ -125,7 +125,7 @@ function CotizacionesPDF({
             <View>
               {productos.map((item, i) => (
                 <Text key={i}>
-                  {item.prod_base} X {item.prod_altura}
+                  {item.base} X {item.altura}
                 </Text>
               ))}
             </View>
